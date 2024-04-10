@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         gameState = GameState.MainMenu;
 
-        player.SetActive(true);
+        player.SetActive(false);
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
         winScreen.SetActive(false);
@@ -80,8 +80,6 @@ public class GameManager : MonoBehaviour
         pauseMenu.SetActive(false);
         mainMenu.SetActive(true);
         player.SetActive(false);
-
-
     }
 
     public void Gameplay()
@@ -90,8 +88,6 @@ public class GameManager : MonoBehaviour
         _uiManager.UIGameplay();
         Cursor.visible = false;
         player.SetActive(true);
-
-
     }
 
     public void Paused()

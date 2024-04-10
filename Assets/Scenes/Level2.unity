@@ -30113,8 +30113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76efc03e4008e44c8afd2cb2257c476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: GameOver
-  levelManager: {fileID: 0}
+  gameManager: {fileID: 0}
+  _levelManager: {fileID: 0}
+  sceneName: 
 --- !u!4 &54089347
 Transform:
   m_ObjectHideFlags: 0
@@ -30187,7 +30188,7 @@ GameObject:
   - component: {fileID: 1267250927}
   m_Layer: 0
   m_Name: SpawnPlayer
-  m_TagString: SpawnPoint
+  m_TagString: SpawnPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30328,8 +30329,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76efc03e4008e44c8afd2cb2257c476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: GameOver
-  levelManager: {fileID: 0}
+  gameManager: {fileID: 0}
+  _levelManager: {fileID: 0}
+  sceneName: 
 --- !u!4 &1572755628
 Transform:
   m_ObjectHideFlags: 0
@@ -72345,7 +72347,7 @@ GameObject:
   - component: {fileID: 1865176528}
   m_Layer: 0
   m_Name: Win
-  m_TagString: Untagged
+  m_TagString: SpawnPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72362,8 +72364,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76efc03e4008e44c8afd2cb2257c476, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: Level 2
-  levelManager: {fileID: 0}
+  gameManager: {fileID: 0}
+  _levelManager: {fileID: 0}
+  sceneName: 
 --- !u!4 &1865176529
 Transform:
   m_ObjectHideFlags: 0

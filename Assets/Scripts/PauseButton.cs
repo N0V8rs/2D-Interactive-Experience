@@ -7,7 +7,7 @@ public class PauseButton : MonoBehaviour
 {
     public GameObject pauseUI;
     public GameObject opitionUI;
-    // Start is called before the first frame update
+ 
     void Start()
     {
         pauseUI.SetActive(false);

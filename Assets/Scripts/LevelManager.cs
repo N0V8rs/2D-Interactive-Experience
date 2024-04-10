@@ -7,10 +7,12 @@ public class LevelManager : MonoBehaviour
     public GameObject player;
 
     public GameManager gameManager;
+
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
     }
+
     public void LoadScene(string name)
     {
         SceneManager.sceneLoaded += OnSceneLoad;
