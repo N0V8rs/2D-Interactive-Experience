@@ -2,68 +2,89 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public PlayerController playerController;
-    public GameObject dialogueBox;
+    [Header("References")]
+
+    public GameObject dialogueUI;
     public TMP_Text dialogueText;
     public GameObject player;
-    private string[] dialogueLines;
-    private int currentLine = 0;
+    public Animator animator;
 
-    private bool canDisplayNextLine = false;
+    private Queue<string> dialogueQueue;
 
-    public void StartDialogue(string[] lines)
+    // For typing effect
+    private bool isTyping = false;
+    private string currentSentence;
+
+    void Start()
     {
-        dialogueLines = lines;
-        currentLine = 0;
-        dialogueText.text = dialogueLines[currentLine];
-        dialogueBox.SetActive(true);
+        dialogueQueue = new Queue<string>();
+    }
+
+    public void StartDialogue(string[] sentences)
+    {
+        // Clear the queue
+        dialogueQueue.Clear();
+        dialogueUI.SetActive(true);
+
         player.GetComponent<PlayerController>().enabled = false;
+
+
+        // Set the animator speed to 0
+        animator.enabled = false;
         player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        player.GetComponentInChildren<Animator>().enabled = false;
-        StartCoroutine(EnableNextLineAfterDelay(1f));
+
+        foreach (string currentLine in sentences)
+        {
+            dialogueQueue.Enqueue(currentLine);
+        }
+
+        DisplayNextSentence();
     }
 
-    public void DisplayNextLine()
+    public void DisplayNextSentence()
     {
-        if (!canDisplayNextLine) 
-            return; 
-
-        currentLine++;
-        if (currentLine < dialogueLines.Length)
+        if (isTyping)
         {
-            dialogueText.text = dialogueLines[currentLine];
+            StopAllCoroutines();
+            dialogueText.text = currentSentence;
+            isTyping = false;
+        }
+        else if (dialogueQueue.Count == 0)
+        {
+            EndDialogue();
         }
         else
         {
-            dialogueBox.SetActive(false);
-            player.GetComponent<PlayerController>().enabled = true;
-            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            player.GetComponentInChildren<Animator>().enabled = true;
-            canDisplayNextLine = false; 
+            currentSentence = dialogueQueue.Dequeue();
+            StopAllCoroutines(); // Stop any previous typing effects
+            StartCoroutine(TypeSentence(currentSentence));
         }
     }
 
-    // Add this method
-    private IEnumerator EnableNextLineAfterDelay(float delay)
+    void EndDialogue()
     {
-        yield return new WaitForSeconds(delay);
-        canDisplayNextLine = true;
+        animator.enabled = true;
+        dialogueQueue.Clear();
+        dialogueUI.SetActive(false);
+
+        // Enable player movement
+        player.GetComponent<PlayerController>().enabled = true;
+        player.GetComponent<PlayerInteraction>().enabled = true;
     }
-    void Awake()
+
+    IEnumerator TypeSentence(string sentence)
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        isTyping = true;
+        dialogueText.text = "";
+        foreach (char letter in sentence.ToCharArray())
         {
-            playerController = player.GetComponent<PlayerController>();
-            dialogueBox = player.transform.Find("DialogueText").gameObject;
-            dialogueText = dialogueBox.GetComponentInChildren<TMP_Text>();
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(0.05f); // Wait for 0.05 seconds
         }
-        else
-        {
-            Debug.LogError("Player not found");
-        }
+        isTyping = false;
     }
 }

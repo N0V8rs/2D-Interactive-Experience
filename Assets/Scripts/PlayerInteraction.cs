@@ -1,53 +1,60 @@
+using TMPro;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
-public class PlyerInteractions : MonoBehaviour
+public class PlayerInteraction : MonoBehaviour
 {
+    [Header("Current object the character is colliding with")]
     public GameObject currentInterObj = null;
-    public InteractionObject currentInterObjScript = null;
-    public DialogueManager dialogueManager; // Add this line
+    public InteractionObject currentObjScript = null;
+
+    [Header("Player interact prompt")]
+    public TMP_Text interactMessage;
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && currentInterObj)
+        DialogueManager dialogueManager = FindObjectOfType<DialogueManager>();
+        if (dialogueManager.dialogueUI.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
         {
-            if (currentInterObjScript.info)
+            dialogueManager.DisplayNextSentence();
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && currentInterObj == true)
+        {
+            if (currentObjScript.info == true)
             {
-                currentInterObjScript.Info();
+                currentObjScript.Info();
             }
 
-            if (currentInterObjScript.pickup)
+            if (currentObjScript.pickup == true)
             {
-                currentInterObjScript.Pickup();
+                currentObjScript.Pickup();
             }
 
-            if (currentInterObjScript.dialogue)
+            if (currentObjScript.talking == true)
             {
-                dialogueManager.StartDialogue(currentInterObjScript.dialogueText);
+                currentObjScript.Dialogue();
             }
         }
 
-        if (dialogueManager.dialogueBox.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
-        {
-            dialogueManager.DisplayNextLine();
-        }
     }
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Interactable") == true)
+        if (other.CompareTag("InteractObject") == true)
         {
             currentInterObj = other.gameObject;
-            currentInterObjScript = currentInterObj.GetComponent<InteractionObject>();
-            Debug.Log(other.name);
+            currentObjScript = currentInterObj.GetComponent<InteractionObject>();
+            interactMessage.gameObject.SetActive(true);
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Interactable") == true)
+        if (other.CompareTag("InteractObject") == true)
         {
             currentInterObj = null;
-            Debug.Log("Player exited");
+            interactMessage.gameObject.SetActive(false);
         }
     }
 }

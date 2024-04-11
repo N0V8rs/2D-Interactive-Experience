@@ -10,6 +10,7 @@ TagManager:
   - WinTrigger
   - SpawnPoint
   - Interactable
+  - InteractObject
   layers:
   - Default
   - TransparentFX

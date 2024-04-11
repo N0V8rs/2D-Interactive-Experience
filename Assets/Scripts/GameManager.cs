@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public void Awake()
     {
+
         Cursor.visible = true;
         gameState = GameState.MainMenu;
 
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         // Pause game 
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (gameState == GameState.Gameplay)
             {
@@ -69,10 +70,8 @@ public class GameManager : MonoBehaviour
             case GameState.GameOver:
                 GameOver();
                 break;
-
         }
     }
-
     public void MainMenu()
     {
         gameState = GameState.MainMenu;
@@ -80,6 +79,8 @@ public class GameManager : MonoBehaviour
         pauseMenu.SetActive(false);
         mainMenu.SetActive(true);
         player.SetActive(false);
+
+
     }
 
     public void Gameplay()
@@ -88,6 +89,8 @@ public class GameManager : MonoBehaviour
         _uiManager.UIGameplay();
         Cursor.visible = false;
         player.SetActive(true);
+
+
     }
 
     public void Paused()
@@ -129,6 +132,7 @@ public class GameManager : MonoBehaviour
         _uiManager.UIGameWin();
         winScreen.SetActive(true);
         Cursor.visible = true;
+        player.SetActive(false);
 
     }
     public void GameOver()
@@ -139,5 +143,4 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
         loseScreen.SetActive(true);
     }
-
 }
