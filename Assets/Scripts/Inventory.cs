@@ -13,105 +13,6 @@ public class Inventory : MonoBehaviour
         items = new List<Item>();
     }
 
-    public void AddItem(Item item)
-    {
-        switch (item.itemType)
-        {
-            case "Potion":
-                // Add a potion to the inventory'
-                items.Add(item);
-                Debug.Log("Potion Type");
-                Debug.Log("Current Potion count: " + CountPotions());
-                break;
-
-            case "Sword":
-                // Add a potion to the inventory'
-                items.Add(item);
-                Debug.Log("Sword Type");
-                Debug.Log("Current Sword count: " + CountSword());
-                break;
-
-            case "Coin":
-                // Add a potion to the inventory'
-                items.Add(item);
-                Debug.Log("Coin Type");
-                Debug.Log("Current Coin count: " + CountCoin());
-                break;
-
-            case "KeyShards":
-                items.Add(item);
-                Debug.Log("KeyShards Type");
-                FindObjectOfType<QuestManager>().UpdateKeyShards();
-
-                if (KeyShards() == 3)
-                {
-                    GameObject parentObject = GameObject.Find("LockedDoor");
-                    if (parentObject != null)
-                    {
-                        Transform childObject = parentObject.transform.Find("UnlockedDoor");
-                        if (childObject != null)
-                        {
-                            childObject.gameObject.SetActive(true);
-
-                            // Play the sound
-                            AudioSource audioSource = childObject.GetComponent<AudioSource>();
-                            if (audioSource != null)
-                            {
-                                audioSource.Play();
-                            }
-
-
-                        }
-                        else
-                        {
-                            Debug.LogError("Child game object not found");
-                        }
-                    }
-                }
-
-                if (KeyShards() == 5)
-                {
-                    GameObject parentObject = GameObject.Find("LockedDoor");
-                    if (parentObject != null)
-                    {
-                        Transform childObject = parentObject.transform.Find("UnlockedDoor");
-                        if (childObject != null)
-                        {
-                            childObject.gameObject.SetActive(true);
-
-                            AudioSource audioSource = childObject.GetComponent<AudioSource>();
-                            if (audioSource != null)
-                            {
-                                audioSource.Play();
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogError("Child game object not found");
-                        }
-                    }
-                }
-
-                break;
-
-            case "Weapon":
-                // Add a Weapon to the inventory
-                items.Add(item);
-                Debug.Log("Weapon Type");
-                break;
-
-            case "Statue":
-                // Statue interacted with
-                items.Add(item);
-                Debug.Log("Statue Type");
-                break;
-
-            default:
-                Debug.LogError("Invalid item type: " + item.itemType);
-                break;
-        }
-    }
-
     public int KeyShards()
     {
         return items.Count(i => i.itemType == "KeyShards");
@@ -157,5 +58,62 @@ public class Inventory : MonoBehaviour
     public int GetItemCount(Item item)
     {
         return items.Count(i => i == item);
+    }
+    public void AddItem(Item item)
+    {
+        items.Add(item);
+        Debug.Log($"{item.itemType} Type");
+
+        switch (item.itemType)
+        {
+            case "Potion":
+                Debug.Log($"Current Potion count: {CountPotions()}");
+                break;
+            case "Sword":
+                Debug.Log($"Current Sword count: {CountSword()}");
+                break;
+            case "Coin":
+                Debug.Log($"Current Coin count: {CountCoin()}");
+                break;
+            case "KeyShards":
+                FindObjectOfType<QuestManager>().UpdateKeyShards();
+                HandleKeyShards();
+                break;
+            case "Weapon":
+                break;
+            case "Statue":
+                break;
+            default:
+                Debug.LogError($"Invalid item type: {item.itemType}");
+                break;
+        }
+    }
+
+    private void HandleKeyShards()
+    {
+        int keyShardsCount = KeyShards();
+        if (keyShardsCount == 3 || keyShardsCount == 5)
+        {
+            GameObject parentObject = GameObject.Find("LockedDoor");
+            if (parentObject != null)
+            {
+                Transform childObject = parentObject.transform.Find("UnlockedDoor");
+                if (childObject != null)
+                {
+                    childObject.gameObject.SetActive(true);
+
+                    // Play the sound
+                    AudioSource audioSource = childObject.GetComponent<AudioSource>();
+                    if (audioSource != null)
+                    {
+                        audioSource.Play();
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Child game object not found");
+                }
+            }
+        }
     }
 }

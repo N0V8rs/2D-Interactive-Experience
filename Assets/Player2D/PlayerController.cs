@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("More than one instance of PlayerController found!");
             Destroy(this.gameObject);
         }
 
@@ -36,11 +35,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Inventory = GetComponent<Inventory>();
-
-        if (Inventory == null)
-        {
-            Debug.LogError("Inventory component not found on PlayerController.");
-        }
     }
 
     void Update()
