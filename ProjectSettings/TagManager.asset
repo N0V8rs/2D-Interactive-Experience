@@ -8,10 +8,10 @@ TagManager:
   - SpawnPlayer
   - DeathTrigger
   - WinTrigger
-  - SpawnPoint
   - Interactable
   - InteractObject
   - UnlockedDoor
+  - LoseTrigger
   layers:
   - Default
   - TransparentFX

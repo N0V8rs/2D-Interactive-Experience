@@ -71,5 +71,4 @@ public class UIManager : MonoBehaviour
         gameWin.SetActive(false);
         gameOver.SetActive(true);
     }
-
 }
