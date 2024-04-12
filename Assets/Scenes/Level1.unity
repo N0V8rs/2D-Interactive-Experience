@@ -30769,7 +30769,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -50.09442, w: 0}
+  m_margin: {x: 0, y: 0, z: 18.17131, w: -41.625404}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -30960,7 +30960,7 @@ GameObject:
   - component: {fileID: 257825226}
   - component: {fileID: 257825225}
   m_Layer: 0
-  m_Name: Statue
+  m_Name: Rock
   m_TagString: InteractObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76263,7 +76263,8 @@ MonoBehaviour:
   item: {fileID: 0}
   talking: 1
   dialogueLines:
-  - I have dropped some coins some where around here
+  - I have dropped my coins around here somewhere, I don't know where but could you
+    go find them for me
 --- !u!61 &1903002888
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -76461,7 +76462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: 1
-  message: The maze is filled with coins to get find
+  message: This maze is filled with gold coins, go find them for the NPC
   infoText: {fileID: 124512263}
   interactionType: 
   pickup: 0
