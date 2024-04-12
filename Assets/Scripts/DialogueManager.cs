@@ -56,11 +56,12 @@ public class DialogueManager : MonoBehaviour
         else if (dialogueQueue.Count == 0)
         {
             EndDialogue();
+            return;
         }
         else
         {
             currentSentence = dialogueQueue.Dequeue();
-            StopAllCoroutines(); // Stop any previous typing effects
+            StopAllCoroutines();
             StartCoroutine(TypeSentence(currentSentence));
         }
     }
@@ -71,7 +72,6 @@ public class DialogueManager : MonoBehaviour
         dialogueQueue.Clear();
         dialogueUI.SetActive(false);
 
-        // Enable player movement
         player.GetComponent<PlayerController>().enabled = true;
         player.GetComponent<PlayerInteraction>().enabled = true;
     }
@@ -83,7 +83,7 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return new WaitForSeconds(0.05f); // Wait for 0.05 seconds
+            yield return new WaitForSeconds(0.05f);
         }
         isTyping = false;
     }

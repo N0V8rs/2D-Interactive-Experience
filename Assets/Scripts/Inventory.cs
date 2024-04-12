@@ -8,7 +8,6 @@ public class Inventory : MonoBehaviour
 {
     private List<Item> items;
 
-
     public Inventory()
     {
         items = new List<Item>();
@@ -22,37 +21,34 @@ public class Inventory : MonoBehaviour
                 // Add a potion to the inventory'
                 items.Add(item);
                 Debug.Log("Potion Type");
-                Debug.Log("Current potion count: " + CountPotions());
+                Debug.Log("Current Potion count: " + CountPotions());
                 break;
 
-            case "Debris":
+            case "Sword":
                 // Add a potion to the inventory'
                 items.Add(item);
-                Debug.Log("Debris Type");
-                Debug.Log("Current Debris count: " + CountDebris());
+                Debug.Log("Sword Type");
+                Debug.Log("Current Sword count: " + CountSword());
                 break;
 
-            case "Soul":
+            case "Coin":
                 // Add a potion to the inventory'
                 items.Add(item);
-                Debug.Log("Soul Type");
-                Debug.Log("Current Soul count: " + CountSouls());
+                Debug.Log("Coin Type");
+                Debug.Log("Current Coin count: " + CountCoin());
                 break;
 
-            case "Stone":
-                // Add a stone to the inventory
+            case "KeyShards":
                 items.Add(item);
-                Debug.Log("Stone Type");
-                FindObjectOfType<QuestManager>().UpdateStoneCountText();
+                Debug.Log("KeyShards Type");
+                FindObjectOfType<QuestManager>().UpdateKeyShards();
 
-                if (CountStones() == 3)
+                if (KeyShards() == 3)
                 {
-                    // If it has, find the parent game object
-                    GameObject parentObject = GameObject.Find("Portal");
+                    GameObject parentObject = GameObject.Find("LockedDoor");
                     if (parentObject != null)
                     {
-                        // Find the child game object and activate it
-                        Transform childObject = parentObject.transform.Find("GoodPortal");
+                        Transform childObject = parentObject.transform.Find("UnlockedDoor");
                         if (childObject != null)
                         {
                             childObject.gameObject.SetActive(true);
@@ -73,19 +69,16 @@ public class Inventory : MonoBehaviour
                     }
                 }
 
-                if (CountStones() == 5)
+                if (KeyShards() == 5)
                 {
-                    // Find the parent game object for the second portal
-                    GameObject parentObject = GameObject.Find("Portal");
+                    GameObject parentObject = GameObject.Find("LockedDoor");
                     if (parentObject != null)
                     {
-                        // Find the child game object and activate it
-                        Transform childObject = parentObject.transform.Find("GoodPortal");
+                        Transform childObject = parentObject.transform.Find("UnlockedDoor");
                         if (childObject != null)
                         {
                             childObject.gameObject.SetActive(true);
 
-                            // Play the sound
                             AudioSource audioSource = childObject.GetComponent<AudioSource>();
                             if (audioSource != null)
                             {
@@ -113,17 +106,15 @@ public class Inventory : MonoBehaviour
                 Debug.Log("Statue Type");
                 break;
 
-
-
             default:
                 Debug.LogError("Invalid item type: " + item.itemType);
                 break;
         }
     }
 
-    public int CountStones()
+    public int KeyShards()
     {
-        return items.Count(i => i.itemType == "Stone");
+        return items.Count(i => i.itemType == "KeyShards");
     }
 
     public int CountWeapons()
@@ -136,14 +127,14 @@ public class Inventory : MonoBehaviour
         return items.Count(i => i.itemType == "Potion");
     }
 
-    public int CountDebris()
+    public int CountSword()
     {
-        return items.Count(i => i.itemType == "Debris");
+        return items.Count(i => i.itemType == "Sword");
     }
 
-    public int CountSouls()
+    public int CountCoin()
     {
-        return items.Count(i => i.itemType == "Soul");
+        return items.Count(i => i.itemType == "Coin");
     }
     public int CountStatue()
     {

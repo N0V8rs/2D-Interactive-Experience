@@ -8,7 +8,7 @@ public class QuestManager : MonoBehaviour
 {
     public List<Quest> ActiveQuests;
     public TMP_Text questText;
-    public TMP_Text stoneCountText;
+    public TMP_Text keyshardsText;
 
     public void AddQuest(Quest quest)
     {
@@ -23,28 +23,26 @@ public class QuestManager : MonoBehaviour
             if (quest.CheckCompletionCondition(FindObjectOfType<PlayerController>()))
             {
                 quest.IsCompleted = true;
-                quest.GetComponent<InteractionObject>().dialogueLines[0] = "You have completed the quest! Here is a stone to help you on your journey!";
+                quest.GetComponent<InteractionObject>().dialogueLines[0] = "Thank you for collecting for me, here is a key shard for your troubles";
                 UpdateQuestText();
             }
         }
     }
 
-    public void UpdateStoneCountText()
+    public void UpdateKeyShards()
     {
-        int stoneCount = FindObjectOfType<Inventory>().CountStones();
-        stoneCountText.text = $"{stoneCount}/5 Stones Collected";
+        int keyShards = FindObjectOfType<Inventory>().KeyShards();
+        keyshardsText.text = $"{keyShards}/5 Key Shards Collected";
     }
 
     public void UpdateQuestText()
     {
         if (ActiveQuests.All(quest => quest.IsCompleted))
         {
-            // If all quests are completed, hide the quest text UI
             questText.gameObject.SetActive(false);
         }
         else
         {
-            // If there are active quests, show the quest text UI and update the text
             questText.gameObject.SetActive(true);
             questText.text = "";
             foreach (var quest in ActiveQuests)

@@ -10,7 +10,7 @@ public class InteractionObject : MonoBehaviour
     [Header("Info")]
     public bool info;
     public string message;
-    public TextMeshPro infoText;
+    public TMP_Text infoText;
     public string interactionType;
 
     [Header("Pickups")]
@@ -29,7 +29,6 @@ public class InteractionObject : MonoBehaviour
 
     public void Info()
     {
-        // Log message
         Debug.Log(message);
 
         if (infoText != null)
@@ -50,7 +49,6 @@ public class InteractionObject : MonoBehaviour
 
         if (interactionType == "StatueInteract")
         {
-            // Add a weapon to the player's inventory
             FindObjectOfType<PlayerController>().Inventory.AddItem(new Item { itemType = "Statue" });
         }
     }
@@ -95,7 +93,7 @@ public class InteractionObject : MonoBehaviour
         else if (quest != null && quest.IsGiven && !quest.IsCompleted && quest.CheckCompletionCondition(FindObjectOfType<PlayerController>()))
         {
 
-            dialogueLines[0] = "Thank you so much! Here's a Stone to help you on your journey!";
+            dialogueLines[0] = "Thank you for collecting for me, here is a key shard for your troubles";
             quest.IsCompleted = true;
 
             if (quest is PotionQuest)
@@ -104,7 +102,7 @@ public class InteractionObject : MonoBehaviour
             }
             Debug.Log("Current potion count: " + playerInventory.CountPotions());
 
-            FindObjectOfType<PlayerController>().Inventory.AddItem(item: new Item { itemType = "Stone" });
+            FindObjectOfType<PlayerController>().Inventory.AddItem(item: new Item { itemType = "KeyShards" });
             currentDialogueLine = 0;
             questManager.UpdateQuestText();
 
@@ -112,7 +110,7 @@ public class InteractionObject : MonoBehaviour
         else if (quest != null && quest.IsGiven && !quest.IsCompleted)
         {
 
-            dialogueLines[0] = "How is that task going? Be sure to come back once you're done!";
+            dialogueLines[0] = "How's the quest going, come back with the items I required";
         }
 
         FindObjectOfType<DialogueManager>().StartDialogue(dialogueLines);

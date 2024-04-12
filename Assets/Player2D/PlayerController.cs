@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("GoodPortal"))
+        if (other.gameObject.CompareTag("UnlockedDoor"))
         {
             GameObject.FindObjectOfType<LevelManager>().LoadScene(sceneName);
         }
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (other.gameObject.CompareTag("BadPortal"))
+        if (other.gameObject.CompareTag("LoseTrigger"))
         {
             gameManager.GameOver();
             gameManager.gameState = GameManager.GameState.GameOver;

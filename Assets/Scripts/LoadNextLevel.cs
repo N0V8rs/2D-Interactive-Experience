@@ -19,7 +19,7 @@ public class TriggerScript : MonoBehaviour
             GameObject.FindObjectOfType<LevelManager>().LoadScene(sceneName);
         }
 
-        if (other.gameObject.CompareTag("Death"))
+        if (other.gameObject.CompareTag("Lose"))
         {
             gameManager.GameOver();
             gameManager.gameState = GameManager.GameState.GameOver;

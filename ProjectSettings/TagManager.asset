@@ -11,6 +11,7 @@ TagManager:
   - SpawnPoint
   - Interactable
   - InteractObject
+  - UnlockedDoor
   layers:
   - Default
   - TransparentFX
