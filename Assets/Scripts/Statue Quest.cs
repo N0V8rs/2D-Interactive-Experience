@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatueQuest : Quest
+public class ItemQuest : Quest
 {
-    public int requiredStatueCount = 1;
+    public string requiredItemType;
+    public int requiredItemCount = 1;
 
     public override bool CheckCompletionCondition(PlayerController player)
     {
@@ -18,7 +19,7 @@ public class StatueQuest : Quest
             return false;
         }
 
-        // Check if the player has collected enough potions
-        return inventory.CountStatue() >= requiredStatueCount;
+        // Check if the player has collected enough items of the required type
+        return inventory.CountItem(requiredItemType) >= requiredItemCount;
     }
 }

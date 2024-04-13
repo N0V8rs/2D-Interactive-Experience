@@ -10,6 +10,15 @@ public class QuestManager : MonoBehaviour
     public TMP_Text questText;
     public TMP_Text keyshardsText;
 
+    private PlayerController playerController;
+    private Inventory inventory;
+
+    private void Awake()
+    {
+        playerController = FindObjectOfType<PlayerController>();
+        inventory = FindObjectOfType<Inventory>();
+    }
+
     public void AddQuest(Quest quest)
     {
         ActiveQuests.Add(quest);
@@ -20,7 +29,7 @@ public class QuestManager : MonoBehaviour
     {
         foreach (var quest in ActiveQuests)
         {
-            if (quest.CheckCompletionCondition(FindObjectOfType<PlayerController>()))
+            if (quest.CheckCompletionCondition(playerController))
             {
                 quest.IsCompleted = true;
                 quest.GetComponent<InteractionObject>().dialogueLines[0] = "Thank you for collecting for me, here is a key shard for your troubles";
@@ -31,7 +40,7 @@ public class QuestManager : MonoBehaviour
 
     public void UpdateKeyShards()
     {
-        int keyShards = FindObjectOfType<Inventory>().KeyShards();
+        int keyShards = inventory.CountItem("KeyShards");
         keyshardsText.text = $"{keyShards}/5 Key Shards Collected";
     }
 
@@ -44,14 +53,15 @@ public class QuestManager : MonoBehaviour
         else
         {
             questText.gameObject.SetActive(true);
-            questText.text = "";
+            string questTextString = "";
             foreach (var quest in ActiveQuests)
             {
                 if (!quest.IsCompleted)
                 {
-                    questText.text += "Current Quest: " + quest.name + "\n";
+                    questTextString += $"Current Quest: {quest.name}\n";
                 }
             }
+            questText.text = questTextString;
         }
     }
 }

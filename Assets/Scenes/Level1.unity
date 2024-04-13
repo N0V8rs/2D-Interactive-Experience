@@ -31987,7 +31987,8 @@ MonoBehaviour:
   Description: 
   IsCompleted: 0
   IsGiven: 0
-  requiredStatueCount: 1
+  requiredItemType: Statue
+  requiredItemCount: 1
 --- !u!1 &629309950
 GameObject:
   m_ObjectHideFlags: 0

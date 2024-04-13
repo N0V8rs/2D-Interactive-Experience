@@ -21,9 +21,15 @@ public class InteractionObject : MonoBehaviour
     public string[] dialogueLines;
     private int currentDialogueLine = 0;
 
-    public void Start()
-    {
+    private PlayerController playerController;
+    private Inventory playerInventory;
+    private QuestManager questManager;
 
+    private void Awake()
+    {
+        playerController = FindObjectOfType<PlayerController>();
+        playerInventory = playerController.Inventory;
+        questManager = FindObjectOfType<QuestManager>();
     }
 
     public void Info()
@@ -40,29 +46,15 @@ public class InteractionObject : MonoBehaviour
             Debug.LogError("infoText is not assigned!");
         }
 
-        if (interactionType == "WeaponInfo")
+        if (interactionType == "WeaponInfo" || interactionType == "StatueInteract")
         {
-            // Add a weapon to the player's inventory
-            FindObjectOfType<PlayerController>().Inventory.AddItem(new Item { itemType = "Weapon" });
-        }
-
-        if (interactionType == "StatueInteract")
-        {
-            FindObjectOfType<PlayerController>().Inventory.AddItem(new Item { itemType = "Statue" });
+            playerInventory.AddItem(new Item { itemType = interactionType.Replace("Info", "").Replace("Interact", "") });
         }
     }
 
     public void Pickup()
     {
         Debug.Log("You Picked Up " + this.gameObject.name);
-        PlayerController playerController = PlayerController.Instance;
-
-        // Check if the Inventory property is null
-        if (playerController.Inventory == null)
-        {
-            Debug.LogError("Inventory not found.");
-            return;
-        }
 
         // Check if the item field is null
         if (this.item == null)
@@ -71,49 +63,47 @@ public class InteractionObject : MonoBehaviour
             return;
         }
 
-        FindObjectOfType<PlayerController>().Inventory.AddItem(new Item { itemType = this.item.itemType });
+        playerInventory.AddItem(new Item { itemType = this.item.itemType });
 
         this.gameObject.SetActive(false);
-
     }
 
     public void Dialogue()
     {
         Quest quest = GetComponent<Quest>();
-        QuestManager questManager = FindObjectOfType<QuestManager>();
-        Inventory playerInventory = FindObjectOfType<PlayerController>().Inventory;
 
         if (quest != null && !quest.IsGiven && currentDialogueLine >= dialogueLines.Length - 1)
         {
-
             questManager.AddQuest(quest);
             quest.IsGiven = true;
         }
-        else if (quest != null && quest.IsGiven && !quest.IsCompleted && quest.CheckCompletionCondition(FindObjectOfType<PlayerController>()))
+        else if (quest != null && quest.IsGiven && !quest.IsCompleted && quest.CheckCompletionCondition(playerController))
         {
-
-            dialogueLines[0] = "Thank you for collecting for me, here is a key shard for your troubles";
-            quest.IsCompleted = true;
-
-            if (quest is PotionQuest)
-            {
-                playerInventory.RemoveAllItems();
-            }
-            Debug.Log("Current potion count: " + playerInventory.CountPotions());
-
-            FindObjectOfType<PlayerController>().Inventory.AddItem(item: new Item { itemType = "KeyShards" });
-            currentDialogueLine = 0;
-            questManager.UpdateQuestText();
-
+            CompleteQuest(quest);
         }
         else if (quest != null && quest.IsGiven && !quest.IsCompleted)
         {
-
             dialogueLines[0] = "How's the quest going, come back with the items I required";
         }
 
         FindObjectOfType<DialogueManager>().StartDialogue(dialogueLines);
         currentDialogueLine++;
+    }
+
+    private void CompleteQuest(Quest quest)
+    {
+        dialogueLines[0] = "Thank you for collecting for me, here is a key shard for your troubles";
+        quest.IsCompleted = true;
+
+        if (quest is PotionQuest)
+        {
+            playerInventory.RemoveAllItems();
+        }
+        Debug.Log("Current potion count: " + playerInventory.CountItem("Potion"));
+
+        playerInventory.AddItem(item: new Item { itemType = "KeyShards" });
+        currentDialogueLine = 0;
+        questManager.UpdateQuestText();
     }
 
     IEnumerator FadeText()

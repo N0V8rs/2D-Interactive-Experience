@@ -36,19 +36,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // Pause game 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (gameState == GameState.Gameplay)
-            {
-                gameState = GameState.Paused;
-                Paused();
-            }
-            else if (gameState == GameState.Paused)
-            {
-                ResumeGame();
-            }
-        }
+        HandlePause();
 
         switch (gameState)
         {
@@ -72,6 +60,22 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
+    private void HandlePause()
+    {
+        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+
+        if (gameState == GameState.Gameplay)
+        {
+            gameState = GameState.Paused;
+            Paused();
+        }
+        else if (gameState == GameState.Paused)
+        {
+            ResumeGame();
+        }
+    }
+
     public void MainMenu()
     {
         gameState = GameState.MainMenu;

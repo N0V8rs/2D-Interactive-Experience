@@ -13,52 +13,6 @@ public class Inventory : MonoBehaviour
         items = new List<Item>();
     }
 
-    public int KeyShards()
-    {
-        return items.Count(i => i.itemType == "KeyShards");
-    }
-
-    public int CountWeapons()
-    {
-        return items.Count(i => i.itemType == "Weapon");
-    }
-
-    public int CountPotions()
-    {
-        return items.Count(i => i.itemType == "Potion");
-    }
-
-    public int CountSword()
-    {
-        return items.Count(i => i.itemType == "Sword");
-    }
-
-    public int CountCoin()
-    {
-        return items.Count(i => i.itemType == "Coin");
-    }
-    public int CountStatue()
-    {
-        return items.Count(i => i.itemType == "Statue");
-    }
-
-    public void RemoveItem(Item item)
-    {
-        items.Remove(item);
-    }
-    public void RemoveAllItems()
-    {
-        items.RemoveAll(item => item.itemType == "Potion");
-    }
-    public bool ContainsItem(Item item)
-    {
-        return items.Contains(item);
-    }
-
-    public int GetItemCount(Item item)
-    {
-        return items.Count(i => i == item);
-    }
     public void AddItem(Item item)
     {
         items.Add(item);
@@ -67,20 +21,15 @@ public class Inventory : MonoBehaviour
         switch (item.itemType)
         {
             case "Potion":
-                Debug.Log($"Current Potion count: {CountPotions()}");
-                break;
             case "Sword":
-                Debug.Log($"Current Sword count: {CountSword()}");
-                break;
             case "Coin":
-                Debug.Log($"Current Coin count: {CountCoin()}");
+                Debug.Log($"Current {item.itemType} count: {CountItem(item.itemType)}");
                 break;
             case "KeyShards":
                 FindObjectOfType<QuestManager>().UpdateKeyShards();
                 HandleKeyShards();
                 break;
             case "Weapon":
-                break;
             case "Statue":
                 break;
             default:
@@ -91,7 +40,7 @@ public class Inventory : MonoBehaviour
 
     private void HandleKeyShards()
     {
-        int keyShardsCount = KeyShards();
+        int keyShardsCount = CountItem("KeyShards");
         if (keyShardsCount == 3 || keyShardsCount == 5)
         {
             GameObject parentObject = GameObject.Find("LockedDoor");
@@ -115,5 +64,30 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
+    }
+
+    public int CountItem(string itemType)
+    {
+        return items.Count(i => i.itemType == itemType);
+    }
+
+    public void RemoveItem(Item item)
+    {
+        items.Remove(item);
+    }
+
+    public void RemoveAllItems()
+    {
+        items.RemoveAll(item => item.itemType == "Potion");
+    }
+
+    public bool ContainsItem(Item item)
+    {
+        return items.Contains(item);
+    }
+
+    public int GetItemCount(Item item)
+    {
+        return items.Count(i => i == item);
     }
 }
